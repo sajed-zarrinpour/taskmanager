@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AssignedTaskUpdatedEvent;
+use App\Events\TaskAssignedEvent;
 use App\Http\Requests\TaskDataRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -63,6 +65,7 @@ class TaskController extends Controller
     public function update(TaskDataRequest $request, Task $task) {
         $validated = $request->validated();
         $task = $this->taskService->update($task, $validated);
+        event(new AssignedTaskUpdatedEvent($task->owner, $task));
         return new TaskResource($task);
     }
 
