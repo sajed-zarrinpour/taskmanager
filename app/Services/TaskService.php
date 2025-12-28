@@ -10,8 +10,9 @@ class TaskService {
     public function Create(array $data){
         return Task::create($data);
     }
-    public function Update(int $id, array $data){
-        return Task::find($id)->update($data);
+    public function Update(Task $task, array $data){
+        $task->update($data);
+        return $task;
     }
     public function Delete(Task $task){
         return $task->delete();
