@@ -28,8 +28,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('tasks')->group(function(){
         Route::get('/', [TaskController::class, 'my'])->name('task:my');
         Route::post('/', [TaskController::class, 'create'])->name('task:create');
-        Route::get('/{id}', [TaskController::class, 'detail'])->name('task:detail');
-        Route::put('/{id}', [TaskController::class, 'update'])->name('task:update');
-        Route::delete('/{id}', [ TaskController::class, 'delete'])->name('task:delete');
+        Route::get('/{task}', [TaskController::class, 'detail'])->name('task:detail')->middleware('can:view,task');
+        Route::put('/{task}', [TaskController::class, 'update'])->name('task:update')->middleware('can:update,task');
+        Route::delete('/{task}', [ TaskController::class, 'delete'])->name('task:delete')->middleware('can:delete,task');
     });
 });
