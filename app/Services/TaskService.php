@@ -19,7 +19,7 @@ class TaskService {
     public function Get(int $id){
         return Task::find($id);
     }
-    public function My(User $user){
-        return $user->tasks();
+    public function MyTasks(User $user, int $perPage){
+        return $user->tasks()->paginate($perPage);
     }
 }
