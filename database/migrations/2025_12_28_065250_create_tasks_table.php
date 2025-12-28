@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title'); // (required)
             $table->integer('user_id');
             $table->string('status'); // (pending, in_progress, done)
-            $table->string('description'); // (optional)
-            $table->date('due_date');// (optional)
+            $table->string('description')->nullable(); // (optional)
+            $table->date('due_date')->nullable();// (optional)
             $table->softDeletes(); // soft delete
             $table->timestamps();
         });
