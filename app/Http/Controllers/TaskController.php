@@ -21,10 +21,14 @@ class TaskController extends Controller
     public function create(TaskDataRequest $request) {
         $validated = $request->validated();
 
+        $user = auth()->user(); 
+
         $task = $this->taskService->create([
             ...$validated,
-            'user_id'=>auth()->user()->id,
+            'user_id'=>$user->id,
         ]);
+
+        event(new TaskAssignedEvent($user, $task));
 
         return response()->json(new TaskResource($task), 201);
     }
