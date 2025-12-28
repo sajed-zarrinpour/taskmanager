@@ -30,6 +30,6 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/', [TaskController::class, 'create'])->name('task:create');
         Route::get('/{task}', [TaskController::class, 'detail'])->name('task:detail')->middleware('can:view,task');
         Route::put('/{task}', [TaskController::class, 'update'])->name('task:update')->middleware('can:update,task');
-        Route::delete('/{task}', [ TaskController::class, 'delete'])->name('task:delete')->middleware('can:delete,task');
+        Route::delete('/{task}', [ TaskController::class, 'delete'])->name('task:delete')->middleware('can:delete,task'); 
     });
 });
