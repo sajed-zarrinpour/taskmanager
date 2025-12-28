@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,4 +24,12 @@ Route::post('login', [UserController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('logout', [UserController::class, 'logout'])->name('logout');
     Route::get('me', [UserController::class, 'me'])->name('me');
+
+    Route::prefix('tasks')->group(function(){
+        Route::get('/', [TaskController::class, 'my'])->name('task:my');
+        Route::post('/', [TaskController::class, 'create'])->name('task:create');
+        Route::get('/{id}', [TaskController::class, 'detail'])->name('task:detail');
+        Route::put('/{id}', [TaskController::class, 'update'])->name('task:update');
+        Route::delete('/{id}', [ TaskController::class, 'delete'])->name('task:delete');
+    });
 });
