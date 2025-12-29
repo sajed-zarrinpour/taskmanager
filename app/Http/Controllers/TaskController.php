@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\AssignedTaskUpdatedEvent;
 use App\Events\TaskAssignedEvent;
+use App\Http\Requests\SearchTasksRequest;
 use App\Http\Requests\TaskDataRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -38,11 +39,22 @@ class TaskController extends Controller
     /**
      * ;ist of all the tasks of the current user
      */
-    public function my(Request $request) {
+    public function my(SearchTasksRequest $request) {
 
-        $perPage = $request->input('per_page', 1);
-        
-        $tasks = $this->taskService->MyTasks(auth()->user(), $perPage);
+        $perPage = $request->input('per_page', 10);
+        $search_col = $request->input('column', 'status');
+        $search_val = $request->input('value', 'in_progress');
+        $order_by = $request->input('order_by', 'id');
+        $direction = $request->input('direction', 'asc');
+
+        $tasks = $this->taskService->MyTasks(
+            auth()->user(),
+            $search_col,
+            $search_val,
+            $order_by,
+            $direction,
+            $perPage,
+        );
 
         return TaskResource::collection($tasks)->additional([
             'meta' => [

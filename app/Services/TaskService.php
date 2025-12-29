@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class TaskService {
@@ -20,7 +21,22 @@ class TaskService {
     public function Get(int $id){
         return Task::find($id);
     }
-    public function MyTasks(User $user, int $perPage){
-        return $user->tasks()->paginate($perPage);
+    public function MyTasks(User $user, string $search_col = '', mixed $search_val=null, string $order_by = 'id', string $direction = 'asc', int $perPage){
+        $query = Task::query();
+        switch ($search_col) {
+            case 'status':
+                $query->where($search_col, '=', $search_val);
+                break;
+            case 'due_date':
+                $date = Carbon::parse($search_val);
+                $query->where($search_col, '=', $date);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        return $query->orderBy($order_by, strtolower($direction))->paginate($perPage);
     }
 }
