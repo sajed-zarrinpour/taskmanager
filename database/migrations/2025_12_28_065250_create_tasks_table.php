@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('title'); // (required)
             $table->integer('user_id');
-            $table->string('status'); // (pending, in_progress, done)
+            $table->string('status')->default('pending'); // (pending, in_progress, done)
             $table->string('description')->nullable(); // (optional)
             $table->date('due_date')->nullable();// (optional)
             $table->softDeletes(); // soft delete
             $table->timestamps();
+
+            $table->index('title');
+            $table->index('user_id');
+            $table->index('status');
+            $table->index('due_date');
         });
     }
 
