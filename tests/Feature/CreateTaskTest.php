@@ -36,6 +36,10 @@ class CreateTaskTest extends TestCase
         $this->assertNotNull($id);
         $this->assertIsInt($id);
         $this->assertGreaterThan(0, $id);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $id,
+        ]);
     }
 
     /**
