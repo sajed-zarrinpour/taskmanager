@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\Task\TaskCreateDto;
+use App\DTOs\Task\TaskUpdateDto;
 use App\Events\AssignedTaskUpdatedEvent;
 use App\Events\TaskAssignedEvent;
 use App\Http\Requests\SearchTasksRequest;
@@ -26,10 +28,7 @@ class TaskController extends Controller
 
         $user = auth()->user(); 
 
-        $task = $this->taskService->create([
-            ...$validated,
-            'user_id'=>$user->id,
-        ]);
+        $task = $this->taskService->create(TaskCreateDto::FromRequest($request));
 
         event(new TaskAssignedEvent($user, $task));
 
@@ -75,8 +74,7 @@ class TaskController extends Controller
     }
 
     public function update(TaskDataRequest $request, Task $task) {
-        $validated = $request->validated();
-        $task = $this->taskService->update($task, $validated);
+        $task = $this->taskService->update($task, TaskUpdateDto::FromRequest($request));
         event(new AssignedTaskUpdatedEvent($task->owner, $task));
         return new TaskResource($task);
     }

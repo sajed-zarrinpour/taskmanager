@@ -2,17 +2,19 @@
 
 namespace App\Services;
 
+use App\DTOs\Task\TaskCreateDto;
+use App\DTOs\Task\TaskUpdateDto;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class TaskService {
-    public function Create(array $data){
-        return Task::create($data);
+    public function Create(TaskCreateDto $data){
+        return Task::create($data->toArray());
     }
-    public function Update(Task $task, array $data){
-        $task->update($data);
+    public function Update(Task $task, TaskUpdateDto $data){
+        $task->update($data->toArray());
         return $task;
     }
     public function Delete(Task $task){
