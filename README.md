@@ -44,3 +44,9 @@ tests
 ```
 sail artisan test
 ```
+
+if you want to use queues then update ```.env``` file for ```QUEUE_CONNECTION=database```
+and run the queue with
+```
+sail artisan queue:work
+```
